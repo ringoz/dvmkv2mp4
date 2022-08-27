@@ -71,15 +71,6 @@ function processsubs {
     for i in "$inputbase".*.srt; do 
         eval "cp \"$i\" \"`echo "$i" | sed 's/\ DV\.\|\ HDR10+\.\|HDR\./\./g' | sed 's/\.\(.*\)\.srt/\ DV-MP4\.\1\.srt/g'`\"";
     done
-    # CONVERT PGS 2 SRT
-    if [ -s "sub.exports" ] && [ "$(cat sub.exports | grep hdmv_pgs)" != "" ]; then
-      while read i;do
-        stream=`echo "$i" | cut -f1 -d\|`
-        lang=`echo "$i" | cut -f5 -d\|`
-        /opt/dotnet/dotnet /opt/PgsToSrt/net5/PgsToSrt.dll --input "$stream" --output "${stream%.sup}.srt" --tesseractlanguage=$lang
-        #docker run --rm -v "`pwd`":/data -e INPUT="/data/$stream" -e OUTPUT="/data/${stream%.sup}.srt" -e LANGUAGE=$lang tentacule/pgstosrt
-      done <<< "$(cat sub.exports | grep hdmv_pgs)"
-    fi
 }
 
 ionc="ionice -c 3"

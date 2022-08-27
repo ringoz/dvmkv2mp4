@@ -74,30 +74,6 @@ RUN \
     /var/lib/apt/lists/* \
     /var/tmp/*
 
-# PGS2SRT
-RUN \
-  printf "\n---Download dotnet runtime---\n\n" && \
-  mkdir /opt/dotnet && \
-  wget -O - ${dotnetlink} | \
-  tar -zx -C /opt/dotnet/ && \
-  printf "\n---Install tesseract and git---\n\n" && \
-  apt-get update && \
-  apt-get install -y libtesseract4 unzip git && \
-  printf "\n---Download pgs2srt---\n\n" && \
-  mkdir /opt/PgsToSrt && \
-  wget ${pgs2srtlink} -O temp.zip && \
-  unzip -d /opt/PgsToSrt/ temp.zip && \
-  rm temp.zip && \
-  printf "\n---Download tesseract models---\n\n" && \
-  cd /opt/PgsToSrt/net5 && \
-  git clone ${tesseractlink} && \
-  printf "\n---Uninstall unzip and git and cleanup apt cache---\n\n" && \
-  apt-get purge -y unzip git && \
-  apt-get autoremove -y && \
-  rm -rf \ 
-    /var/lib/apt/lists/* \
-    /var/tmp/*
-
 RUN \
   printf "\n---Create \"convert\" directory for volumne attachment---\n\n" && \
   mkdir /convert
